@@ -1,6 +1,9 @@
 # How to run the project
  * Clone this repository 
- * Run ``` Docker-compose up -d ```
+ * Run ``` docker-compose up -d ```
+ * Run ``` docker exec -it app composer install ```
+
+
 # Creating Database User
     * Enter in container bash docker-compose exec db bash 
     * Run mysql -u root -p123456
@@ -9,6 +12,3 @@
     * Run FLUSH PRIVILEGES;
     * Run exit
     * Our user has created!
-
-# Running Migrations
- * Run ``` docker-compose exec app php artisan migrate ```
