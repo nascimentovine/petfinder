@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use http\Env\Request;
+use App\Address;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Pet extends Model
 {
@@ -13,77 +13,57 @@ class Pet extends Model
     protected $fillable = ['name', 'breed', 'age', 'weight', 'city', 'fk_user_id'];
 
     /**
-     * Generate cutted link
-     *
-     * @param string $url
-     * @return array $response
+     * @return array
      */
-    public static function getPet(Request $request) : array
+    public static function getPets()
     {
-        $pet = self::where('city', $url)->count();
-
-        $duplicated = self::checkDuplicate($url);
-
-        if($duplicated) {
-            do {
-                $url = self::regenerate($url);
-            }while(self::checkDuplicate($url));
+        //check if user is logged and get your city
+        if (!empty(auth()->user())) {
+            $city = Address::where('fk_user_id', auth()->user()->id)->pluck('city');
+            return self::getPetsByCity($city[0]);
         }
-
-        //Time to expire
-        $time_to_expire = Carbon::now()->addMinutes(self::TIME_TO_EXPIRE);
-        $expire = date('Y-m-d H:i:s', strtotime($time_to_expire));
-
-        $url_cutted = self::create([
-            'url_target' => $url_target,
-            'cuted_url' => $url,
-            'date_expire' => $expire
-        ]);
-
-        $response = [
-            'target_url' => $url_target,
-            'cuted_url' => $url,
-            'status' => 200
-        ];
-
-        return $response;
+        //if user is not logged return all pets
+        return self::getAllPets();
     }
 
     /**
-     * Check if has duplication
-     *
-     * @param string $url
-     * @return bool
+     * get pets by city with user email
+     * @param $city
+     * @return array
      */
-    public static function checkDuplicate(string $url) : bool
+    public static function getPetsByCity($city)
     {
-        $duplicated = self::where('cuted_url', $url)->count();
-
-        return boolval($duplicated);
-    }
-
-    public static function prepare_url(string $url) : string
-    {
-        $url = str_replace("http://", "", $url);
-        $url = str_replace("https://", "", $url);
-
-        $url = urldecode($url);
-
-        return $url;
+        return DB::select("
+            SELECT
+                p.*,
+                u.email
+            FROM
+                pet p
+            INNER JOIN
+                users u ON u.id = p.fk_user_id
+            WHERE
+                p.city = :city",
+            [
+                'city' => $city,
+            ]
+        );
     }
 
     /**
-     * generate other if has equal in DB
-     *
-     * @param string $url
-     * @return string $new_url
+     * Get all pets with user email
+     * @return array
      */
-    public static function regenerate($url) : string
+    public static function getAllPets()
     {
-        $number = rand(0, 999);
-
-        $new_url = substr($url, 0, 7) . $number;
-
-        return $new_url;
+        return DB::select("
+            SELECT
+                p.*,
+                u.email
+            FROM
+                pet p
+            INNER JOIN
+                users u ON u.id = p.fk_user_id
+            "
+        );
     }
 }

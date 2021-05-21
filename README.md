@@ -12,7 +12,3 @@
 
 # Running Migrations
  * Run ``` docker-compose exec app php artisan migrate ```
-
-# Running Unit Tests
- * Run ``` docker-compose exec app php artisan test ```
-

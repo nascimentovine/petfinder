@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Pet;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,16 +17,36 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/add-pet', 'PetController@create')->name('add-pet');
 
-Route::get('/', function () {
-    return view('home');
+Route::post('/update-pet/{id}', 'PetController@update')->name('update-pet');
+
+Route::get('/delete-pet/{id}', function ($id) {
+    Pet::where('id', $id)->delete();
+    return redirect('/pet-personal')->middleware('auth');;
 });
 
-Route::get('/pet-register', function(){
+Route::get('/edit-pet/{id}', function ($id) {
+    $data = Pet::where('id', $id)->first();
+    return view('pet.edit', ["result" => $data])->middleware('auth');;
+});
+
+Route::get('/', function () {
+    $data = Pet::getPets();
+    return view('home', ["results" => $data]);
+});
+
+Route::get('/home', function () {
+    $data = Pet::getPets();
+    return view('home', ["results" => $data]);
+})->name('home');
+
+Route::get('/pet-register', function () {
     return view('pet.register');
-})->name('pet-register');
+})->name('pet-register')->middleware('auth');;
 
-
+Route::get('/pet-personal', function () {
+    $data = Pet::where('fk_user_id', auth()->user()->id)->get();
+    return view('pet.personal', ["results" => $data]);
+})->name('pet-personal')->middleware('auth');;
