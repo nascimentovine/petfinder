@@ -26,6 +26,7 @@ class PetController extends Controller
             'city' => $request->city,
             'fk_user_id' => auth()->user()->id,
         ]);
+
         return redirect()->back()->with('success', 'Pet cadastrado com sucesso!');
     }
 
@@ -35,6 +36,5 @@ class PetController extends Controller
         $pet->update($request->all());
 
         return redirect()->back()->with('success', 'Pet alterado com sucesso!');
-
     }
 }

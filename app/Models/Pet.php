@@ -17,12 +17,11 @@ class Pet extends Model
      */
     public static function getPets()
     {
-        //check if user is logged and get your city
+        //check if user is logged and get pet by your city
         if (!empty(auth()->user())) {
             $city = Address::where('fk_user_id', auth()->user()->id)->pluck('city');
             return self::getPetsByCity($city[0]);
         }
-        //if user is not logged return all pets
         return self::getAllPets();
     }
 

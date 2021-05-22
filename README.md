@@ -9,9 +9,9 @@
 * Run ``` $ docker exec -it db bash ```
 * Run ``` $ mysql -u root -p123456 ```
 * Run ``` $ show databases; ```
-* Run ``` $ GRANT ALL ON laravel.* TO 'petfinder'@'%' IDENTIFIED BY '123456'; ```
+* Run ``` $ GRANT ALL ON petfinder.* TO 'larauser'@'%' IDENTIFIED BY '123456'; ```
 * Run ``` $ FLUSH PRIVILEGES; ```
-* Run ``` $ exit and exit container ```
+*  ``` exit mysql and exit container ```
 
 * Run ``` docker exec -it app php artisan migrate ```
 

@@ -24,12 +24,12 @@ Route::post('/update-pet/{id}', 'PetController@update')->name('update-pet');
 
 Route::get('/delete-pet/{id}', function ($id) {
     Pet::where('id', $id)->delete();
-    return redirect('/pet-personal')->middleware('auth');;
+    return redirect('/pet-personal');
 });
 
 Route::get('/edit-pet/{id}', function ($id) {
     $data = Pet::where('id', $id)->first();
-    return view('pet.edit', ["result" => $data])->middleware('auth');;
+    return view('pet.edit', ["result" => $data]);
 });
 
 Route::get('/', function () {
