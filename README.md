@@ -5,6 +5,8 @@
 
 
 # Creating Database User
+
+* Run ``` $ docker exec -it db bash ```
 * Run ``` $ mysql -u root -p123456 ```
 * Run ``` $ show databases; ```
 * Run ``` $ GRANT ALL ON laravel.* TO 'petfinder'@'%' IDENTIFIED BY '123456'; ```
@@ -13,4 +15,11 @@
 
 * Run ``` docker exec -it app php artisan migrate ```
 
-Url app: http://localhost/
+URL app: http://localhost/
+
+
+
+
+Database Schema
+
+![img_1.png](img_1.png)
