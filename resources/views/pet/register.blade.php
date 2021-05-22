@@ -57,7 +57,7 @@
                                 <label for="state" class="col-md-4 col-form-label text-md-right">{{ __('Peso') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="weight" type="text" class="form-control @error('weight') is-invalid @enderror" name="weight" value="{{ old('weight') }}" required autocomplete="name" autofocus>
+                                    <input id="weight" type="text" class="form-control @error('weight') is-invalid @enderror" name="weight" value="{{ old('weight') }}" required autocomplete="weight" autofocus>
 
                                     @error('weight')
                                     <span class="invalid-feedback" role="alert">

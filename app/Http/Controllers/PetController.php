@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PetController extends Controller
 {
@@ -11,13 +12,16 @@ class PetController extends Controller
     {
         return Pet::where('city', $data['city'])->firstOrFail();
     }
-
+    
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'weight' => ['required', 'numeric', 'max:255'],
+        ]);
         Pet::create([
             'name' => $request->name,
             'breed' => $request->breed,
