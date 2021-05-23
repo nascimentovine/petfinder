@@ -1,7 +1,7 @@
 # How to run the project
  * Clone this repository 
  * Run ``` $ docker-compose up -d ```
- * Run ``` $ docker exec -it app composer install ```
+ * Run ``` $ docker exec -it app composer install ``` (If an error returns, proceed to the next steps)
 
 
 # Creating Database User
